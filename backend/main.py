@@ -17,22 +17,10 @@ app = FastAPI(
 )
 
 # CORS middleware for frontend communication
-# Allow localhost for development and production frontend URL
-allowed_origins = [
-    "http://localhost:3000",
-    "http://localhost:3001",
-]
-
-# Add production frontend URL if specified
-frontend_url = os.getenv("FRONTEND_URL")
-if frontend_url:
-    allowed_origins.append(frontend_url)
-
-# Allow Vercel preview deployments (*.vercel.app)
+# Allow all Vercel deployments and localhost
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_origin_regex=r"https://.*\.vercel\.app",
+    allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
